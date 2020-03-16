@@ -49,12 +49,14 @@ public class Puzzle extends Application {
                 event -> {
                     momento.setX(event.getX());
                     momento.setY(event.getY());
+                    checkWinner();
                 }
         );
         rect.setOnMouseDragged(
                 event -> {
                     rect.setX(event.getX() - size / 2);
                     rect.setY(event.getY() - size / 2);
+                    checkWinner();
                 }
         );
         rect.setOnMouseReleased(
@@ -62,13 +64,17 @@ public class Puzzle extends Application {
                     if (logic.move(this.extract(momento.getX(), momento.getY()), this.extract(event.getX(), event.getY()))) {
                         rect.setX(((int) event.getX() / 40) * 40 + 5);
                         rect.setY(((int) event.getY() / 40) * 40 + 5);
+
                         checkWinner();
                     } else {
                         rect.setX(((int) momento.getX() / 40) * 40 + 5);
                         rect.setY(((int) momento.getY() / 40) * 40 + 5);
+
                     }
+
                 }
         );
+
         return rect;
     }
 

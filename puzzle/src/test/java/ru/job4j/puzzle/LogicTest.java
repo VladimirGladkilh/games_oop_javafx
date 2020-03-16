@@ -42,6 +42,7 @@ public class LogicTest {
         assertThat(logic.isWin(), is(true));
     }
 
+
     @Test
     public void whenNotWin() {
         Logic logic = new Logic(5) {

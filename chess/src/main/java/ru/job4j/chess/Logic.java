@@ -26,9 +26,25 @@ public class Logic {
         int index = this.findBy(source);
         if (index != -1) {
             Cell[] steps = this.figures[index].way(source, dest);
-            if (steps.length > 0 && steps[steps.length - 1].equals(dest)) {
-                rst = true;
-                this.figures[index] = this.figures[index].copy(dest);
+            if (steps != null && steps.length > 0 && steps[steps.length - 1].equals(dest)) {
+                boolean find = false;
+                for (int i=0; i < steps.length; i++) {
+                    if (this.findBy(steps[i]) > -1) {
+                        if (i != steps.length-1) {
+                            find = true;
+                            break;
+                        } else {
+                            //TODO как рубить фигуры?
+                            find = true; //find = false если стоит фигура противника
+                            break;
+                        }
+                    }
+                }
+                if (!find) {
+                    rst = true;
+                    this.figures[index] = this.figures[index].copy(dest);
+                }
+
             }
         }
         return rst;
@@ -41,7 +57,7 @@ public class Logic {
         this.index = 0;
     }
 
-    private int findBy(Cell cell) {
+    public int findBy(Cell cell) {
         int rst = -1;
         for (int index = 0; index != this.figures.length; index++) {
             if (this.figures[index] != null && this.figures[index].position().equals(cell)) {

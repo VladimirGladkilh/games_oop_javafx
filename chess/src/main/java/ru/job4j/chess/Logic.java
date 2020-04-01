@@ -23,30 +23,23 @@ public class Logic {
 
     public boolean move(Cell source, Cell dest) {
         boolean rst = false;
-        int index = this.findBy(source);
-        if (index != -1) {
-            Cell[] steps = this.figures[index].way(source, dest);
-            if (steps != null && steps.length > 0 && steps[steps.length - 1].equals(dest)) {
-                boolean find = false;
-                for (int i=0; i < steps.length; i++) {
-                    if (this.findBy(steps[i]) > -1) {
-                        if (i != steps.length-1) {
-                            find = true;
-                            break;
-                        } else {
-                            //TODO как рубить фигуры?
-                            find = true; //find = false если стоит фигура противника
-                            break;
-                        }
+        try {
+            int index = this.findBy(source);
+            if (index != -1) {
+                Cell[] steps = this.figures[index].way(source, dest);
+                if (steps != null && steps.length > 0 && steps[steps.length - 1].equals(dest)) {
+                    if (isWayFree(steps)) {
+                        rst = true;
+                        this.figures[index] = this.figures[index].copy(dest);
                     }
                 }
-                if (!find) {
-                    rst = true;
-                    this.figures[index] = this.figures[index].copy(dest);
-                }
-
             }
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
+
         return rst;
     }
 
@@ -73,5 +66,15 @@ public class Logic {
         return "Logic{" +
                 "figures=" + Arrays.toString(this.figures) +
                 '}';
+    }
+    public boolean isWayFree(Cell[] steps) {
+        boolean free = true;
+        for (int i = 0; i < steps.length; i++) {
+            if (this.findBy(steps[i]) > -1) {
+                free = false;
+                break;
+            }
+        }
+        return free;
     }
 }

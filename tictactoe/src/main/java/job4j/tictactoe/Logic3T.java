@@ -1,6 +1,10 @@
 package job4j.tictactoe;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class Logic3T {
     private final Figure3T[][] table;
@@ -54,31 +58,37 @@ public class Logic3T {
         return result;
     }
 
+    /**
+     * Проверяем первую горизонталь, первую вертикаль и обе диагонали
+     * проверка остальных вертикалей и диагоналей реализована методами monoHorizontal и monoVertical
+     * @return
+     */
     public boolean isWinnerX() {
-
-        boolean r2 =         this.fillBy(Figure3T::hasMarkX, 0,0, 1, 1) ;
-        boolean r = this.fillBy(Figure3T::hasMarkX, 0, 0, 1, 0);
+        boolean r =          this.fillBy(Figure3T::hasMarkX, 0, 0, 1, 0);
+        boolean r2 =         this.fillBy(Figure3T::hasMarkX, 0, 0, 1, 1) ;
         boolean r1 =         this.fillBy(Figure3T::hasMarkX, 0, 0, 0, 1) ;
         boolean r3 =         this.fillBy(Figure3T::hasMarkX, this.table.length - 1 , 0, -1, 1);
         return r|| r1||r2||r3;
     }
-
+    /**
+     * Проверяем первую горизонталь, первую вертикаль и обе диагонали
+     * проверка остальных вертикалей и диагоналей реализована методами monoHorizontal и monoVertical
+     * @return
+     */
     public boolean isWinnerO() {
-        return this.fillBy(Figure3T::hasMarkO, 0, 0, 1, 0) ||
-                this.fillBy(Figure3T::hasMarkO, 0, 0, 0, 1) ||
-                this.fillBy(Figure3T::hasMarkO, 0,0, 1, 1) ||
-                this.fillBy(Figure3T::hasMarkO, this.table.length - 1, 0, -1, 1);
+        boolean r =          this.fillBy(Figure3T::hasMarkO, 0, 0, 1, 0);
+        boolean r2 =         this.fillBy(Figure3T::hasMarkO, 0, 0, 1, 1) ;
+        boolean r1 =         this.fillBy(Figure3T::hasMarkO, 0, 0, 0, 1) ;
+        boolean r3 =         this.fillBy(Figure3T::hasMarkO, this.table.length - 1 , 0, -1, 1);
+        return r|| r1||r2||r3;
     }
 
     public boolean hasGap() {
-        for (int i = 0; i < this.table.length; i++) {
-            for (int j = 0; j < this.table[i].length; j++) {
-                Figure3T cell = this.table[i][j];
-                if (cell.isClean()) {
-                    return true;
-                }
-            }
-        }
-        return false;
+
+        return Arrays.stream(this.table)
+                .flatMap(figure3TS -> Arrays.stream(figure3TS))
+                .filter(figure3T -> figure3T.isClean())
+                .findFirst()
+                .isPresent();
     }
 }

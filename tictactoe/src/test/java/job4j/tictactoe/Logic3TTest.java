@@ -102,9 +102,9 @@ public class Logic3TTest {
         Figure3T[][] table = {
                 {new Figure3T(true, false), new Figure3T(false, true), new Figure3T(false,true)},
                 {new Figure3T(true, false), new Figure3T(true, false), new Figure3T(true,false)},
-                {new Figure3T(false, true), new Figure3T(), new Figure3T(true, false)},
+                {new Figure3T(false, true), new Figure3T(true, false), new Figure3T(true, false)},
         };
         Logic3T login = new Logic3T(table);
-        assertThat(login.hasGap(), is(true));
+        assertThat(login.hasGap(), is(false));
     }
 }

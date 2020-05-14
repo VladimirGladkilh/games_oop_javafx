@@ -28,7 +28,7 @@ public class Logic3T {
             }else {
                 diag = false;
             }
-            System.out.println(result + " " + diag);
+            //System.out.println(result + " " + diag);
             startX += deltaX;
             startY += deltaY;
         }

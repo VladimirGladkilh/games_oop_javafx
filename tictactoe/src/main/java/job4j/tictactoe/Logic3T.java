@@ -18,17 +18,14 @@ public class Logic3T {
         boolean diag = true;
         for (int index = 0; index != this.table.length; index++) {
             Figure3T cell = this.table[startX][startY];
-
             if (predicate.test(cell)) {
                 if (monoHorizontal(predicate, startX) || monoVertical(predicate, startY)) {
                     result = true;
                     break;
                 }
-
             }else {
                 diag = false;
             }
-            //System.out.println(result + " " + diag);
             startX += deltaX;
             startY += deltaY;
         }
@@ -64,11 +61,10 @@ public class Logic3T {
      * @return
      */
     public boolean isWinnerX() {
-        boolean r =          this.fillBy(Figure3T::hasMarkX, 0, 0, 1, 0);
-        boolean r2 =         this.fillBy(Figure3T::hasMarkX, 0, 0, 1, 1) ;
-        boolean r1 =         this.fillBy(Figure3T::hasMarkX, 0, 0, 0, 1) ;
-        boolean r3 =         this.fillBy(Figure3T::hasMarkX, this.table.length - 1 , 0, -1, 1);
-        return r|| r1||r2||r3;
+        return this.fillBy(Figure3T::hasMarkX, 0, 0, 1, 0) ||
+                this.fillBy(Figure3T::hasMarkX, 0, 0, 1, 1) ||
+                this.fillBy(Figure3T::hasMarkX, 0, 0, 0, 1) ||
+                this.fillBy(Figure3T::hasMarkX, this.table.length - 1 , 0, -1, 1);
     }
     /**
      * Проверяем первую горизонталь, первую вертикаль и обе диагонали
@@ -76,19 +72,16 @@ public class Logic3T {
      * @return
      */
     public boolean isWinnerO() {
-        boolean r =          this.fillBy(Figure3T::hasMarkO, 0, 0, 1, 0);
-        boolean r2 =         this.fillBy(Figure3T::hasMarkO, 0, 0, 1, 1) ;
-        boolean r1 =         this.fillBy(Figure3T::hasMarkO, 0, 0, 0, 1) ;
-        boolean r3 =         this.fillBy(Figure3T::hasMarkO, this.table.length - 1 , 0, -1, 1);
-        return r|| r1||r2||r3;
+        return this.fillBy(Figure3T::hasMarkO, 0, 0, 1, 0) ||
+                this.fillBy(Figure3T::hasMarkO, 0, 0, 1, 1) ||
+                this.fillBy(Figure3T::hasMarkO, 0, 0, 0, 1) ||
+                this.fillBy(Figure3T::hasMarkO, this.table.length - 1 , 0, -1, 1);
+
     }
 
     public boolean hasGap() {
-
         return Arrays.stream(this.table)
                 .flatMap(figure3TS -> Arrays.stream(figure3TS))
-                .filter(figure3T -> figure3T.isClean())
-                .findFirst()
-                .isPresent();
+                .anyMatch(figure3T -> figure3T.isClean());
     }
 }
